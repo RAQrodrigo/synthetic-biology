@@ -5,6 +5,9 @@ from pony.orm import db_session, select
 from database import Article, init_db
 from dotenv import load_dotenv
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TXT_PATH = os.path.join(BASE_DIR, 'reports', 'metaanalisis_reporte_20.txt')
+
 load_dotenv()
 
 # Configuración
@@ -13,12 +16,19 @@ client = Groq(api_key=GROQ_API_KEY)
 
 @db_session
 def obtener_articulos():
+    """
+    Recupera todos los artículos de la base de datos que contienen un abstract 
+    no vacío y los retorna como lista para evitar problemas de descompilación.
+    """
     # Traemos todos y filtramos en Python para evitar errores de descompilación en Python 3.11+
     todos = Article.select()[:] 
     return [a for a in todos if a.abstract and a.abstract.strip() != ""]
 
 def analizar_individual(abstract):
-    """Analiza un abstract individualmente para extraer lo esencial"""
+    """
+    Analiza un abstract individualmente haciendo uso de la API de Groq y un prompt
+    específico para extraer los puntos clave (objetivo, resultado y conclusión). 
+    """
     prompt = f"""
     Eres un experto en investigación médica. Resume este abstract en 3 puntos clave:
     1. Objetivo principal.
@@ -36,7 +46,10 @@ def analizar_individual(abstract):
     return chat_completion.choices[0].message.content
 
 def generar_metaanalisis_final(sintesis_acumulada):
-    """Toma los 20 análisis individuales y crea el reporte final"""
+    """
+    Toma los diversos análisis individuales preprocesados y crea un reporte metaanalítico 
+    con conclusiones estructuradas en español utilizando la API de Groq.
+    """
     prompt = f"""
     Eres un científico de datos médicos. Basado en los siguientes resúmenes de múltiples estudios, 
     redacta un metaanálisis cualitativo estructurado en ESPAÑOL:
@@ -55,6 +68,11 @@ def generar_metaanalisis_final(sintesis_acumulada):
     return chat_completion.choices[0].message.content
 
 def main():
+    """
+    Función principal que inicializa la base de datos, obtiene una primera muestra de 
+    artículos, procesa sus resúmenes uno a uno integrando un retraso para no sobrecargar
+    la API public de IA, y finalmente guarda el metaanálisis en un archivo de texto.
+    """
     init_db()
     
     # 1. Obtener todos y recortar a los primeros 20
@@ -93,7 +111,7 @@ def main():
         print("="*50)
         print(reporte_final)
         
-        with open("metaanalisis_reporte_20.txt", "w", encoding="utf-8") as f:
+        with open(TXT_PATH, "w", encoding="utf-8") as f:
             f.write(reporte_final)
         print(f"\nReporte guardado con éxito.")
             

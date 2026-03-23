@@ -5,6 +5,10 @@ init_db()
 
 @db_session
 def mostrar_primeros_10():
+    """
+    Recupera y muestra por consola los primeros 10 artículos almacenados en la base de datos,
+    imprimiendo sus respectivos PMID, títulos y un fragmento corto del abstract.
+    """
     articulos = Article.select()[:10]
 
     for a in articulos:

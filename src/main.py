@@ -8,6 +8,11 @@ import argparse
 from pony.orm import db_session
 from pony.orm.core import TransactionIntegrityError
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSV_PATH = os.path.join(BASE_DIR, 'data', 'abstracts.csv')
+from pony.orm import db_session
+from pony.orm.core import TransactionIntegrityError
+
 
 from database import Article, init_db
 load_dotenv()
@@ -18,6 +23,11 @@ BATCH_SIZE = 10
 MAX_RESULTS = 50
 
 def main(query):
+    """
+    Punto de entrada principal para buscar artículos en PubMed a partir de una query,
+    extraer los resultados por lotes mediante XML, limpiar y guardar cada abstract
+    tanto en una base de datos local como en un archivo CSV.
+    """
     Entrez.email = EMAIL
     # Entrez.api_key = os.environ.get("NCBI_API_KEY") # Altamente recomendado
 
@@ -73,6 +83,10 @@ def main(query):
 
 @db_session
 def save_to_db(data):
+    """
+    Recibe una lista de diccionarios con datos de artículos y los inserta de manera
+    segura en la base de datos omitiendo aquellos que ya existen registrados (comparando PMID).
+    """
     for art in data:
         try:
             # Usamos get o try-except para evitar duplicados
@@ -82,7 +96,11 @@ def save_to_db(data):
             print(f"Error guardando {art['pmid']}: {e}")
 
 def save_to_csv(data):
-    with open("abstracts.csv", "w", newline="", encoding="utf-8") as f:
+    """
+    Exporta la recopilación final de todos los artículos extraídos de PubMed
+    (PMID, título, abstract) a un archivo `abstracts.csv` en el directorio de `data`.
+    """
+    with open(CSV_PATH, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=["pmid", "title", "abstract"])
         writer.writeheader()
         writer.writerows(data)
