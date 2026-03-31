@@ -1,41 +1,30 @@
 import os
 import time
 from groq import Groq
-from pony.orm import db_session, select
+from pony.orm import db_session
 from database import Article, init_db
 from dotenv import load_dotenv
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TXT_PATH = os.path.join(BASE_DIR, 'reports', 'metaanalisis_reporte_20.txt')
-
 load_dotenv()
-
-# Configuración
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-client = Groq(api_key=GROQ_API_KEY)
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 @db_session
 def obtener_articulos():
-    """
-    Recupera todos los artículos de la base de datos que contienen un abstract 
-    no vacío y los retorna como lista para evitar problemas de descompilación.
-    """
-    # Traemos todos y filtramos en Python para evitar errores de descompilación en Python 3.11+
     todos = Article.select()[:] 
     return [a for a in todos if a.abstract and a.abstract.strip() != ""]
 
 def analizar_individual(abstract):
-    """
-    Analiza un abstract individualmente haciendo uso de la API de Groq y un prompt
-    específico para extraer los puntos clave (objetivo, resultado y conclusión). 
-    """
+    """Extrae datos técnicos específicos de cada abstract"""
     prompt = f"""
-    Eres un experto en investigación médica. Resume este abstract en 3 puntos clave:
-    1. Objetivo principal.
-    2. Resultado más importante.
-    3. Conclusión de los autores.
-    
-    Responde estrictamente en español.
+    Eres un experto en Biotecnología y Micología Ambiental. 
+    Analiza el siguiente abstract y extrae estos datos en formato de lista breve:
+    - ORGANISMO: (Género y especie)
+    - USA HONGOS: (Sí/No y cuáles)
+    - TÉCNICA: (Método principal usado)
+    - BIOREMEDIACIÓN: (Sí/No y qué contaminante)
+    - LOCALIZACIÓN: (País/Región del estudio)
+    - HALLAZGO: (Una frase corta)
+
     Abstract: {abstract}
     """
     
@@ -46,18 +35,17 @@ def analizar_individual(abstract):
     return chat_completion.choices[0].message.content
 
 def generar_metaanalisis_final(sintesis_acumulada):
-    """
-    Toma los diversos análisis individuales preprocesados y crea un reporte metaanalítico 
-    con conclusiones estructuradas en español utilizando la API de Groq.
-    """
+    """Genera un reporte estadístico basado en los datos extraídos"""
     prompt = f"""
-    Eres un científico de datos médicos. Basado en los siguientes resúmenes de múltiples estudios, 
-    redacta un metaanálisis cualitativo estructurado en ESPAÑOL:
-    1. Consenso general de la literatura analizada.
-    2. Contradicciones detectadas entre estudios.
-    3. Limitaciones comunes y vacíos de conocimiento.
-    
-    Datos de los estudios:
+    Actúa como un analista de datos científicos. Basado en la información de estos 20 estudios, 
+    redacta un reporte de tendencias en ESPAÑOL:
+    1. ESTADÍSTICA DE ORGANISMOS: ¿Qué se estudia más?
+    2. RELEVANCIA MICOLÓGICA: Resumen del uso de hongos en la muestra.
+    3. FOCO EN BIOREMEDIACIÓN: Tipos de contaminantes y efectividad reportada.
+    4. MAPA TÉCNICO: ¿Qué tecnologías predominan?
+    5. CONCLUSIÓN GLOBAL: ¿Hacia dónde va la investigación en este grupo de papers?
+
+    Datos extraídos:
     {sintesis_acumulada}
     """
     
@@ -68,55 +56,39 @@ def generar_metaanalisis_final(sintesis_acumulada):
     return chat_completion.choices[0].message.content
 
 def main():
-    """
-    Función principal que inicializa la base de datos, obtiene una primera muestra de 
-    artículos, procesa sus resúmenes uno a uno integrando un retraso para no sobrecargar
-    la API public de IA, y finalmente guarda el metaanálisis en un archivo de texto.
-    """
     init_db()
-    
-    # 1. Obtener todos y recortar a los primeros 20
-    lista_completa = obtener_articulos()
-    articulos = lista_completa[:20] 
+    articulos = obtener_articulos()[:20] # Solo los primeros 20
     
     if not articulos:
-        print("No hay artículos en la base de datos para analizar.")
+        print("No hay artículos.")
         return
 
-    print(f"Analizando una muestra de {len(articulos)} artículos...")
+    print(f"Extrayendo datos biotecnológicos de {len(articulos)} artículos...")
     
     analisis_totales = []
-    
-    # 2. Procesar con pausas para respetar el Rate Limit
     for i, art in enumerate(articulos):
-        print(f"[{i+1}/{len(articulos)}] Analizando PMID: {art.pmid}...")
+        print(f"[{i+1}/20] Procesando PMID: {art.pmid}...")
         try:
-            resumen = analizar_individual(art.abstract)
-            analisis_totales.append(f"PMID {art.pmid}: {resumen}")
-            
-            # Pausa de seguridad para no saturar la API gratuita
+            # Aquí la IA ya extrae técnica, localización, hongos, etc.
+            resumen_tecnico = analizar_individual(art.abstract)
+            analisis_totales.append(f"--- DATOS ARTÍCULO {art.pmid} ---\n{resumen_tecnico}")
             time.sleep(1.5) 
-            
         except Exception as e:
-            print(f"Error analizando {art.pmid}: {e}")
+            print(f"Error en {art.pmid}: {e}")
 
-    # 3. Generar el reporte final
-    print("\nGenerando Metaanálisis Global...")
+    print("\nSintetizando tendencias y estadísticas...")
     try:
-        texto_para_meta = "\n\n".join(analisis_totales)
-        reporte_final = generar_metaanalisis_final(texto_para_meta)
+        reporte_final = generar_metaanalisis_final("\n\n".join(analisis_totales))
         
-        print("\n" + "="*50)
-        print("REPORTE DE METAANÁLISIS (Muestra de 20)")
-        print("="*50)
+        print("\n" + "="*60)
+        print(" REPORTE TÉCNICO Y ESTADÍSTICO ".center(60, "="))
         print(reporte_final)
         
-        with open(TXT_PATH, "w", encoding="utf-8") as f:
+        with open("metaanalisis_biotec_20.txt", "w", encoding="utf-8") as f:
             f.write(reporte_final)
-        print(f"\nReporte guardado con éxito.")
             
     except Exception as e:
-        print(f"Error en el paso final: {e}")
+        print(f"Error final: {e}")
 
 if __name__ == "__main__":
     main()
