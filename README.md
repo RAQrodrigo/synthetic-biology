@@ -1,5 +1,5 @@
 # synthetic-biology
-En proyecto consta de varios archivos .py en src. Paso a dar una breve descripción de cada uno:
+El proyecto consta de varios archivos en python, en la parte de src, una base de datos en la carpeta data y ademas reportes hechos por los programas, paso a explicar la carpeta src que es la más importante y como ejecutar cada programa:
 
 ## main.py:
     El archivo, por ahora principal, donde toma datos de pubmed con la entrada que le pidas y guarda en una base de datos el id de la publicación junto a su abstract. Por ahora solo tomo los primeros 20 resultados, pero es facilmente cambiable. Para correrlo necesitamos primero configurar el archivo ".env" en el directorio raíz. El mismo te pide una APIKEY de groq y un mail cualquiera, donde el APIKEY es utilizado para hacer consultas a la IA y el mail porque pubmed te pide un mail para poder hacer consultas.
