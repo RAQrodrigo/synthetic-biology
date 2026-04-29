@@ -1,0 +1,28 @@
+**Informe detallado sobre estadística de organismos, uso de hongos y biorremediación**
+
+**1. Estadística de organismos**
+
+En el conjunto de datos proporcionado, se identifican 21 organismos diferentes, incluyendo bacterias, virus, hongos, plantas y mamíferos. La distribución de los organismos es la siguiente:
+
+* Bacterias: 8 (38,1%): _Escherichia coli_, _Mycobacterium tuberculosis_, _Lactobacillus acidophilus_, _Xanthomonas oryzae_, _Sphingopyxis sp. MG_, _Salmonella enterica serovar Typhimurium_, _Saccharomyces cerevisiae_
+* Virus: 1 (4,8%): _Enterovirus A71_
+* Hongos: 1 (4,8%): _Magnaporthe oryzae_
+* Plantas: 2 (9,5%): _Solanum tuberosum_, _Oryza sativa_ (arroz)
+* Mamíferos: 3 (14,3%): _Homo sapiens_, _Células madre hematopoyéticas_ (HSCs)
+* No especificado: 6 (28,6%)
+
+**2. Uso de hongos**
+
+En el conjunto de datos, solo 2 de 21 organismos mencionan el uso de hongos: _Xanthomonas oryzae_ y _Magnaporthe oryzae_. Ambos se refieren a la síntesis de nanopartículas de plata biogénicas (AgNPs) para mejorar la germinación de semillas y el crecimiento de plántulas de arroz, y exhibir actividad antimicrobiana contra patógenos bacterianos y fúngicos.
+
+**3. Tipos de biorremediación**
+
+Se identifican 3 tipos de biorremediación en el conjunto de datos:
+
+* **Biorremediación de contaminantes químicos**: _Sphingopyxis sp. MG_ utiliza enzimas con actividad catalítica promisca para la degradación de halogenados.
+* **Biorremediación de toxicidad ambiental**: _Xanthomonas oryzae_ y _Magnaporthe oryzae_ producen AgNPs para mejorar la germinación de semillas y el crecimiento de plántulas de arroz, y exhibir actividad antimicrobiana contra patógenos bacterianos y fúngicos.
+* **Biorremediación de patógenos**: _Lactobacillus acidophilus_ tiene potencial probiótico y actividad antimicrobiana contra patógenos alimentarios.
+
+**4. Conclusión global**
+
+En resumen, el conjunto de datos analizado muestra una gran diversidad de organismos y técnicas utilizadas en la biorremediación. Aunque solo un pequeño porcentaje de los organismos mencionan el uso de hongos, estos son fundamentales en la síntesis de nanopartículas de plata biogénicas para mejorar la germinación de semillas y el crecimiento de plántulas de arroz. La biorremediación es una técnica prometedora para abordar problemas ambientales y de salud, y es importante seguir investigando y desarrollando nuevas técnicas y aplicaciones en este campo.

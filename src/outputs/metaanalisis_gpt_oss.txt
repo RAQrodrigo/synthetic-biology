@@ -1,0 +1,141 @@
+## Reporte científico en español
+
+Se analizó un conjunto de **20 registros** con organismos, técnicas y hallazgos diversos.  
+La mayoría de los trabajos corresponden a **biología molecular, ingeniería metabólica, microbiología, medicina regenerativa y química de síntesis**.  
+Solo **1 caso** está explícitamente asociado a **biorremediación** y **4 registros** indican **uso de hongos** o sistemas basados en hongos/levaduras.
+
+---
+
+# 1) Estadística de organismos
+
+## 1.1 Distribución general por tipo de organismo
+
+### Organismos biológicos identificados
+De los 20 registros, **17** corresponden a organismos biológicos concretos y **3** a “No aplica / N/A”.
+
+### Conteo por organismo
+- **Homo sapiens**: 3
+- **Escherichia coli**: 2
+- **Enterovirus A71**: 1
+- **Mycobacterium tuberculosis**: 1
+- **Lactobacillus acidophilus**: 1
+- **Solanum tuberosum**: 1
+- **Oryza sativa**: 1
+- **Salmonella enterica serovar Typhimurium**: 1
+- **Sphingopyxis sp. MG**: 1
+- **Saccharomyces cerevisiae**: 1
+- **No aplica / N/A**: 3
+- **Otros organismos con un caso individual**: 6
+
+## 1.2 Clasificación por grandes grupos biológicos
+
+### Microorganismos
+Predominan claramente:
+- Virus: **Enterovirus A71**
+- Bacterias: **Mycobacterium tuberculosis, Lactobacillus acidophilus, Escherichia coli, Salmonella enterica, Sphingopyxis sp. MG**
+- Levadura: **Saccharomyces cerevisiae**
+
+### Plantas
+- **Solanum tuberosum**
+- **Oryza sativa**
+
+### Humano
+- **Homo sapiens** aparece en 3 registros, principalmente como modelo celular o sistema experimental.
+
+## 1.3 Observaciones sobre la estadística temática
+- Hay una **alta diversidad taxonómica**, con predominio de **microorganismos**.
+- Los organismos más recurrentes están ligados a:
+  - **ingeniería genética/metabólica**
+  - **patogénesis y respuesta inmune**
+  - **biocatálisis y síntesis de compuestos**
+- Los registros sin organismo aplicable corresponden a trabajos de **metodología, química sintética o recursos de modelado**.
+
+---
+
+# 2) Uso de hongos
+
+## 2.1 Frecuencia de uso de hongos
+Según el campo **“usa_hongos”**:
+- **Sí**: 4 registros
+- **No**: 16 registros
+
+### Proporción
+- Uso de hongos: **20%**
+- Sin uso de hongos: **80%**
+
+## 2.2 Casos con uso de hongos
+
+### 1. *Lactobacillus acidophilus*
+- Aunque el organismo principal es bacteriano, el registro indica **uso de hongos: Sí** en el contexto del trabajo.
+- Técnica: aislamiento e identificación por 16S y evaluación probiótica.
+- Hallazgo: cepa probiótica con antagonismo frente a patógenos y formulación de dahi estable.
+
+### 2. *Saccharomyces cerevisiae*
+- Aquí el uso de hongos es directo y central, ya que **S. cerevisiae es una levadura**.
+- Técnica: ingeniería metabólica combinatoria.
+- Hallazgo: producción mejorada de **α-terpineol**.
+
+### 3. *Escherichia coli* (registro 1)
+- Campo “usa_hongos”: Sí.
+- El contenido sugiere una relación con **sistema de display en levadura** además de construcción en E. coli.
+- Hallazgo: algoritmo de ensamblaje de ADN útil para constructos repetitivos y marcaje en sistema de display en levadura.
+
+### 4. *Escherichia coli* (registro 2)
+- Campo “usa_hongos”: No.
+- Aunque el organismo es bacteriano, no se reporta uso de hongos en este caso.
+
+## 2.3 Interpretación
+El uso de hongos aparece principalmente en:
+- **bioproducción** con levaduras
+- **plataformas de expresión y display**
+- posibles **sistemas híbridos microbiológicos**
+
+Sin embargo, en el conjunto global, los hongos **no son el eje dominante** de la literatura analizada.
+
+---
+
+# 3) Tipos de biorremediación
+
+## 3.1 Registros relacionados con biorremediación
+Solo **1 registro** está marcado explícitamente como **“bioremediacion: Sí”**:
+
+### *Sphingopyxis sp. MG*
+- Técnica: minería del genoma completo y caracterización enzimática/bioquímica.
+- Aplicación: degradación de **organoclorados**, por ejemplo **1,2-dicloropropano**.
+- Hallazgo: identificación de **haloalcano dehalogenasas** con actividad sobre halogenados.
+
+## 3.2 Tipo de biorremediación identificable
+El caso corresponde a:
+
+### Biorremediación microbiana por degradación enzimática
+- Mecanismo: **deshalogenación**
+- Enzimas clave:
+  - **haloalcano dehalogenasa**
+  - posible actividad dual con **epóxido hidrolasa**
+- Contaminantes objetivo:
+  - **compuestos organoclorados**
+  - **halogenados alifáticos**
+
+## 3.3 No se observan otros tipos de biorremediación
+En los demás registros:
+- no hay tratamiento de suelos, aguas o residuos contaminantes
+- no hay biodegradación de metales, hidrocarburos o pesticidas
+- no se reportan consorcios microbianos de remoción ambiental
+
+Por tanto, la biorremediación en este conjunto es **muy limitada y altamente específica**.
+
+---
+
+# 4) Conclusión global
+
+El conjunto analizado muestra una **fuerte orientación hacia biotecnología avanzada**, con predominio de:
+- **microbiología funcional**
+- **ingeniería genética y metabólica**
+- **modelos celulares e in vitro**
+- **química de síntesis y catálisis suave**
+
+## Conclusiones principales
+1. **Los microorganismos son el grupo más frecuente**, especialmente bacterias y sistemas microbianos de interés biomédico o biotecnológico.
+2. **El uso de hongos es minoritario**, pero relevante en aplicaciones de fermentación, producción de metabolitos y plataformas híbridas.
+3. **La biorremediación aparece solo en un caso**, centrado en la degradación enzimática de organoclorados por *Sphingopyxis sp. MG*.
+4. Los

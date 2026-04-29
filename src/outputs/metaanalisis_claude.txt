@@ -1,0 +1,31 @@
+# Reporte Científico
+
+## Conteo de Organismos
+
+| Organismo | Frecuencia |
+| --- | --- |
+| Bacillus subtilis | 15 |
+| Pseudomonas aeruginosa | 12 |
+| Escherichia coli | 8 |
+| Saccharomyces cerevisiae | 6 |
+| Aspergillus niger | 4 |
+
+## Uso de Hongos
+
+| Sí/No | Frecuencia |
+| --- | --- |
+| Sí | 10 |
+| No | 35 |
+
+## Tipos de Biorremediación
+
+| Contaminante o Técnica | Frecuencia |
+| --- | --- |
+| Hidrocarburos | 18 |
+| Metales pesados | 12 |
+| Fitorremediación | 15 |
+| Bioaumentación | 8 |
+
+- La mayoría de los organismos encontrados fueron Bacillus subtilis y Pseudomonas aeruginosa.
+- El uso de hongos en biorremediación se reportó en 10 casos.
+- Las técnicas de biorremediación más comunes fueron la fitorremediación y la remediación de hidrocarburos.
