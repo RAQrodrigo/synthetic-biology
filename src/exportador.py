@@ -25,7 +25,7 @@ def guardar_csv(resultados, output_path="outputs/resultados.csv"):
                 for k in micro_limpio.keys():
                     headers_vistos.add(k)
                     
-    orden_base = ["Dominio", "Filo", "Clase", "Orden", "Familia", "Genero", "Especie", "Cepa"]
+    orden_base = ["Dominio", "Filo", "Clase", "Orden", "Familia", "Genero", "Especie", "Cepa", "Fuente de la muestra de microorganismos", "Microbial Origin", "Ciudad y Pais de toma de muestra"]
     headers_finales = []
     
     for h in orden_base:

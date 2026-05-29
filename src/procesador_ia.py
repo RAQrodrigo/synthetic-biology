@@ -91,17 +91,29 @@ def _llamar_ia(cliente, config, prompt, es_json=False):
 def _parsear_json(respuesta):
     if not respuesta:
         return None
+    texto = respuesta.strip()
+    # Sacar bloques markdown ```json ... ``` o ``` ... ```
+    if "```" in texto:
+        bloques = texto.split("```")
+        for i, b in enumerate(bloques):
+            b = b.strip()
+            if b.startswith("json"):
+                b = b[4:].strip()
+            if b.startswith("{") or b.startswith("["):
+                texto = b
+                break
+    # Buscar primer { y último } como fallback
+    if not (texto.startswith("{") or texto.startswith("[")):
+        inicio = texto.find("{")
+        if inicio == -1:
+            print(f"  [ERROR] No se encontró JSON. Respuesta: {respuesta[:120]}...")
+            return None
+        fin = texto.rfind("}")
+        texto = texto[inicio:fin+1]
     try:
-        texto = respuesta.strip()
-        if texto.startswith("```json"):
-            texto = texto[7:]
-        if texto.startswith("```"):
-            texto = texto[3:]
-        if texto.endswith("```"):
-            texto = texto[:-3]
-        return json.loads(texto.strip())
+        return json.loads(texto)
     except json.JSONDecodeError:
-        print(f"  [ERROR] No se pudo parsear JSON. Respuesta: {respuesta[:100]}...")
+        print(f"  [ERROR] JSON inválido. Respuesta: {respuesta[:150]}...")
         return None
 
 
@@ -123,11 +135,14 @@ def generar_reporte_global(cliente, config, resultados, prompt_custom=None):
     return _llamar_ia(cliente, config, prompt, es_json=False)
 
 
-def obtener_articulos_desde_pdf(ruta_pdf):
+def obtener_articulos_desde_pdf(ruta_pdf, max_chars=None):
     texto = pdf_utils.extraer_texto_pdf(ruta_pdf)
     if not texto.strip():
         print("El PDF está vacío o no se pudo leer.")
         return []
+    if max_chars and len(texto) > max_chars:
+        print(f"  Texto truncado de {len(texto)} a {max_chars} caracteres")
+        texto = texto[:max_chars]
     return [VirtualArticle("PDF_Local", texto)]
 
 
@@ -146,7 +161,7 @@ def procesar_pdf(
 
     print(f"--- {nombre_modelo} ---")
     print(f"Extrayendo texto del PDF: {ruta_pdf}")
-    articulos = obtener_articulos_desde_pdf(ruta_pdf)[:max_articulos]
+    articulos = obtener_articulos_desde_pdf(ruta_pdf, config.get("max_input_chars"))[:max_articulos]
     if not articulos:
         print("No se pudo extraer texto del PDF.")
         return [], None

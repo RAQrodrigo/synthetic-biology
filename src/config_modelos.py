@@ -1,31 +1,6 @@
-PROMPT_INDIVIDUAL_TAXONOMIA = """Extrae la taxonomía del microorganismo del siguiente texto científico en ESPAÑOL.
-Responde estrictamente con este formato JSON. Si hay múltiples microorganismos, devuelve una lista de diccionarios bajo 'microorganismos':
-{
-  "microorganismos": [
-    {
-      "Dominio": "Dominio aquí o N/D",
-      "Filo": "Filo o N/D",
-      "Clase": "Clase o N/D",
-      "Orden": "Orden o N/D",
-      "Familia": "Familia o N/D",
-      "Genero": "Género o N/D"
-    }
-  ]
-}
-Texto: {abstract}"""
+from prompt import PROMPT_CLASIFICACION
 
-PROMPT_INDIVIDUAL_BIORREMEDIACION = """Extrae información del siguiente abstract científico en ESPAÑOL.
-Responde estrictamente con este formato JSON:
-{
-  "organismo": "Género y especie",
-  "usa_hongos": "Sí/No",
-  "tecnica": "Método principal",
-  "bioremediacion": "Sí/No (contaminante)",
-  "localizacion": "País o región",
-  "hallazgo": "Resultado principal"
-}
-Abstract: {abstract}"""
-
+# Prompts globales (reporte de texto narrativo, opcional)
 PROMPT_GLOBAL_ESTANDAR = """Actúa como analista científico. Genera un reporte detallado en ESPAÑOL basado en la estructura de los datos:
 1. Estadísticas de Taxonomía (Dominio, Filo, Clase, Orden, Familia, Género)
 2. Conclusión global
@@ -66,9 +41,10 @@ MODELOS = {
         "api_key_var": "OPENROUTER_API_KEY",
         "output_prefix": "metaanalisis_chatgpt_5_4_mini",
         "tipo_prompt": "estandar",
-        "prompt_individual_defecto": PROMPT_INDIVIDUAL_BIORREMEDIACION,
+        "prompt_individual_defecto": PROMPT_CLASIFICACION,
         "prompt_global_defecto": PROMPT_GLOBAL_ESTANDAR,
-        "max_tokens": 1500,
+        "max_tokens": 700,
+        "max_input_chars": 8000,
         "retries": 3,
         "delay": 2,
     },
@@ -78,7 +54,7 @@ MODELOS = {
         "api_key_var": "OPENROUTER_API_KEY",
         "output_prefix": "metaanalisis_gpt_oss",
         "tipo_prompt": "estandar",
-        "prompt_individual_defecto": PROMPT_INDIVIDUAL_BIORREMEDIACION,
+        "prompt_individual_defecto": PROMPT_CLASIFICACION,
         "prompt_global_defecto": PROMPT_GLOBAL_ESTANDAR,
         "max_tokens": 1500,
         "retries": 3,
@@ -90,7 +66,7 @@ MODELOS = {
         "api_key_var": "OPENROUTER_API_KEY",
         "output_prefix": "metaanalisis_claude",
         "tipo_prompt": "tablas",
-        "prompt_individual_defecto": PROMPT_INDIVIDUAL_BIORREMEDIACION,
+        "prompt_individual_defecto": PROMPT_CLASIFICACION,
         "prompt_global_defecto": PROMPT_GLOBAL_TABLAS,
         "retries": 5,
         "delay": 2,
@@ -101,7 +77,7 @@ MODELOS = {
         "api_key_var": "ANTHROPIC_API_KEY",
         "output_prefix": "metaanalisis_claude_nativo",
         "tipo_prompt": "tablas",
-        "prompt_individual_defecto": PROMPT_INDIVIDUAL_BIORREMEDIACION,
+        "prompt_individual_defecto": PROMPT_CLASIFICACION,
         "prompt_global_defecto": PROMPT_GLOBAL_TABLAS,
         "max_tokens": 1000,
         "retries": 5,
@@ -113,7 +89,7 @@ MODELOS = {
         "api_key_var": "OPENROUTER_API_KEY",
         "output_prefix": "metaanalisis_gemini_openrouter",
         "tipo_prompt": "estandar",
-        "prompt_individual_defecto": PROMPT_INDIVIDUAL_BIORREMEDIACION,
+        "prompt_individual_defecto": PROMPT_CLASIFICACION,
         "prompt_global_defecto": PROMPT_GLOBAL_ESTANDAR,
         "max_tokens": 1500,
         "retries": 3,
@@ -125,7 +101,7 @@ MODELOS = {
         "api_key_var": "OPENROUTER_API_KEY",
         "output_prefix": "metaanalisis_llama_groq",
         "tipo_prompt": "estandar",
-        "prompt_individual_defecto": PROMPT_INDIVIDUAL_TAXONOMIA,
+        "prompt_individual_defecto": PROMPT_CLASIFICACION,
         "prompt_global_defecto": PROMPT_GLOBAL_ESTANDAR,
         "max_tokens": 1500,
         "retries": 3,
@@ -138,7 +114,7 @@ MODELOS = {
         "api_key_var": "COHERE_API_KEY",
         "output_prefix": "metaanalisis_cohere",
         "tipo_prompt": "tablas",
-        "prompt_individual_defecto": PROMPT_INDIVIDUAL_BIORREMEDIACION,
+        "prompt_individual_defecto": PROMPT_CLASIFICACION,
         "prompt_global_defecto": PROMPT_GLOBAL_COHERE,
         "retries": 3,
         "delay": 5,
@@ -149,7 +125,7 @@ MODELOS = {
         "api_key_var": "OPENROUTER_API_KEY",
         "output_prefix": "metaanalisis_qwen",
         "tipo_prompt": "estandar",
-        "prompt_individual_defecto": PROMPT_INDIVIDUAL_BIORREMEDIACION,
+        "prompt_individual_defecto": PROMPT_CLASIFICACION,
         "prompt_global_defecto": PROMPT_GLOBAL_ESTANDAR,
         "retries": 5,
         "delay": 2,
