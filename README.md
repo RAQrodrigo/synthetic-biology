@@ -1,38 +1,78 @@
 # synthetic-biology
-El proyecto consta de varios archivos en python, en la parte de src, una base de datos en la carpeta data y ademas reportes hechos por los programas, paso a explicar la carpeta src que es la más importante y como ejecutar cada programa:
 
-## main.py:
-    El archivo, por ahora principal, donde toma datos de pubmed con la entrada que le pidas y guarda en una base de datos el id de la publicación junto a su abstract. Por ahora solo tomo los primeros 20 resultados, pero es facilmente cambiable. Para correrlo necesitamos primero configurar el archivo ".env" en el directorio raíz. El mismo te pide una APIKEY de groq y un mail cualquiera, donde el APIKEY es utilizado para hacer consultas a la IA y el mail porque pubmed te pide un mail para poder hacer consultas.
+Clasificación de papers científicos usando IA. Extraé información estructurada de PDFs y exportala a CSV listo para Google Sheets.
 
-    Lo correriamos solo para actualizar nuestra base de datos, lo dejo como ejemplo una corrida:
-        - Primero creamos nuestro entorno virtual:
-                            python -m venv venv
+## Estructura
 
-        - Lo activamos:
-                            .\venv\Scripts\activate         (windows)
-                            source venv/bin/activate        (Mac/Linux)
+```
+synthetic-biology/
+├── data/               # Base de datos SQLite (artículos de PubMed)
+├── outputs/            # Resultados: CSVs (clasificación) y .txt (reportes)
+│   ├── metaanalisis_llama_groq.csv
+│   └── ...
+├── legacy/             # Scripts antiguos (funcionales, mantenidos por compatibilidad)
+│   ├── iaProcess_Llama.py
+│   ├── iaProcess_Qwen.py
+│   ├── ...
+│   ├── fix_paths.py
+│   └── clean_scripts.py
+├── src/                # Código principal
+│   ├── __init__.py
+│   ├── interfaz.py           # Interfaz gráfica (Tkinter) — entrada principal
+│   ├── procesador_ia.py      # Motor unificado PDF → IA → CSV (también usable por CLI)
+│   ├── config_modelos.py     # Configuración de los 8 modelos IA
+│   ├── pdf_utils.py          # Extracción de texto de PDFs
+│   ├── exportador.py         # Exportación a CSV (UTF-8 BOM, ;)
+│   ├── database.py           # Modelo ORM de base de datos
+│   ├── main.py               # Buscador de artículos en PubMed
+│   ├── Printdb.py            # Debug: muestra primeros registros de la DB
+│   └── csvtolist.py          # Conversor CSV → HTML
+├── .env                # API keys (NO se sube a git)
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
 
-        - Ahora instalamos los requerimientos:
-                            pip install -r requirements.txt
+## Uso
 
-        - Por último tenemos que crear un .env para poner los datos que nos pide Groq para el analisis (una APIKEY) y un mail para Pubmed (cualquiera), tiene que tener lo siguiente:
-                            EMAIL=tu_correo@ejemplo.com
-                            GROQ_API_KEY=tu_api_key_aqui
+### Interfaz gráfica (recomendado)
 
-        - Ahora corremos el programa junto con una Query de la siguiente forma:
-                            venv\Scripts\python.exe src/main.py --query "synthetic biology"
+```bash
+venv\Scripts\python.exe src/interfaz.py
+```
 
-## iaProcess.py:
-    Aqui encontramos el programa para que la IA haga analisis sobre los datos guardados en nuestra base de datos, primero hace una analisis individual de los abstracts y luego hace un analisis global. Por ahora solo guardamos el analisis global. Si queremos cambiar el tipo de analisis que hace, simplemente cambiamos los prompts. Ahora dejo el comando para correrlo:
-                            python .\src\iaProcess.py
+1. Seleccioná un modelo de IA
+2. Elegí un PDF
+3. Dejá marcado **"Solo clasificación estructurada (CSV)"** para obtener solo datos, sin texto narrativo
+4. Click en INICIAR
 
-## csvtolist.py: 
-    El main nos deja, además, un csv con los datos extraidos pero son dificiles de leer así que dejé esto para que lo conviertan en un html y sea más facil de digerir. Lo ejecutamos así:
-                            python .\src\csvtolist.py
+### Línea de comandos
 
-##  database.py:
-        Aquí deje la creación de la base de datos. no hay nada que ejecutar pero se puede ver como es.
+```bash
+venv\Scripts\python.exe src/procesador_ia.py "ruta/al/paper.pdf" "Llama (Groq/OpenRouter)"
+```
 
-## printdb.py: 
-        Por último esto lo ejecutas en caso de que quieras testear si se actualizó la base de datos, solamente printea los primeros 10 resultados. Ejecutamos así:
-                            python .\src\printdb.py
+Ver todos los modelos disponibles:
+
+```bash
+venv\Scripts\python.exe src/procesador_ia.py
+```
+
+### Actualizar base de datos desde PubMed
+
+```bash
+venv\Scripts\python.exe src/main.py --query "synthetic biology"
+```
+
+## Modelos disponibles
+
+| Nombre | API | API Key en .env |
+|--------|-----|-----------------|
+| ChatGPT 5.4 Mini | OpenRouter | OPENROUTER_API_KEY |
+| GPT-OSS | OpenRouter (gratis) | OPENROUTER_API_KEY |
+| Claude | OpenRouter | OPENROUTER_API_KEY |
+| Claude Nativo | Anthropic | ANTHROPIC_API_KEY |
+| Gemini | OpenRouter | OPENROUTER_API_KEY |
+| Llama 3.3 | OpenRouter | OPENROUTER_API_KEY |
+| Cohere | Cohere | COHERE_API_KEY |
+| Qwen 3 | OpenRouter (gratis) | OPENROUTER_API_KEY |
